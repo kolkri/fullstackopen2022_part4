@@ -17,7 +17,7 @@ notesRouter.post('/',  async (request, response, next) => {
     })
 
     const savedBlog = await blog.save()
-    response.json(savedBlog)
+    response.status(201).json(savedBlog)
 })
 
 notesRouter.get('/:id', async (request, response, next) => {
@@ -34,4 +34,14 @@ notesRouter.delete('/:id', async (request, response, next) => {
   response.status(204).end()
 })
 
+notesRouter.put('/:id', async (request, response, next) => {
+  const blog = {
+    title: request.body.title,
+    author: request.body.author,
+    url: request.body.url,
+    likes: request.body.likes
+  }
+  await Blog.findByIdAndUpdate(request.params.id, blog, {new: true})
+  response.status(201).end()
+})
 module.exports = notesRouter
